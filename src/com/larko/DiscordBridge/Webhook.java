@@ -5,7 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Webhook {
-    public static void main(String embed) throws IOException {
+    public static void send(String embed) throws IOException {
         System.out.println(embed);
         URL url = new URL("https://canary.discordapp.com/api/webhooks/756928609670791169/FlFZ6yHIpVCNEOvlDQ8GPjSBFnGxPeCUuTVzX9fxZZBlkq6Gq1s9-AlmCd4gPyvlBk44");
         HttpURLConnection con = (HttpURLConnection)url.openConnection();
