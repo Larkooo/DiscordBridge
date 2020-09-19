@@ -5,9 +5,8 @@ import org.bukkit.craftbukkit.libs.jline.internal.Log;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.larko.DiscordBridge.Webhook;
 
@@ -26,7 +25,10 @@ public class Main extends JavaPlugin implements Listener {
         config.addDefault("webhookUrl", "https://canary.discordapp.com/api/webhooks/756928609670791169/FlFZ6yHIpVCNEOvlDQ8GPjSBFnGxPeCUuTVzX9fxZZBlkq6Gq1s9-AlmCd4gPyvlBk44");
         config.addDefault("leaveJoinMessage", true);
         config.addDefault("serverStartStopMessage", true);
-        config.addDefault("chatBroadcastToDiscord", true);
+        config.addDefault("playerHarvestBlockMessage", false);
+        config.addDefault("playerAdvancementMessage", false);
+        config.addDefault("playerDropItemMessage", false);
+        config.addDefault("playerDeathMessage", false);
         config.addDefault("serverName", "Change the server name in the config file");
         config.addDefault("serverIconUrl", "https://i.imgur.com/rxsK7U3.png");
         config.options().copyDefaults(true);
@@ -76,6 +78,46 @@ public class Main extends JavaPlugin implements Listener {
             Player player = event.getPlayer();
             Webhook.send(config.getString("webhookUrl"), "[" +
                     "{" + "\"author\": {\"name\": \"" + player.getName() + "\", \"icon_url\": \"https://minotar.net/avatar/" + player.getName() + "\"}, \"description\": \"" + player.getName() + " left the server!\", \"timestamp\": \"" + formatter.format(dateNow) + "\", \"color\": \"16426522\"" + "}"
+                    + "]");
+        }
+    }
+
+    @EventHandler
+    public void onDrop(PlayerDropItemEvent event) throws IOException {
+        if (config.getBoolean("playerDropItemMessage")) {
+            Player player = event.getPlayer();
+            Webhook.send(config.getString("webhookUrl"), "[" +
+                    "{" + "\"author\": {\"name\": \"" + player.getName() + "\", \"icon_url\": \"https://minotar.net/avatar/" + player.getName() + "\"}, \"description\": \"" + player.getName() + " dropped " + event.getItemDrop().getName() + "!\", \"timestamp\": \"" + formatter.format(dateNow) + "\", \"color\": \"16737792\"" + "}"
+                    + "]");
+        }
+    }
+
+    @EventHandler
+    public void onHarvest(PlayerHarvestBlockEvent event) throws IOException {
+        if (config.getBoolean("playerHarvestBlockMessage")) {
+            Player player = event.getPlayer();
+            Webhook.send(config.getString("webhookUrl"), "[" +
+                    "{" + "\"author\": {\"name\": \"" + player.getName() + "\", \"icon_url\": \"https://minotar.net/avatar/" + player.getName() + "\"}, \"description\": \"" + player.getName() + " harvested " + event.getHarvestedBlock().toString() + "!\", \"timestamp\": \"" + formatter.format(dateNow) + "\", \"color\": \"16737792\"" + "}"
+                    + "]");
+        }
+    }
+
+    @EventHandler
+    public void onAdvancement(PlayerAdvancementDoneEvent event) throws IOException {
+        if (config.getBoolean("playerAdvancementMessage")) {
+            Player player = event.getPlayer();
+            Webhook.send(config.getString("webhookUrl"), "[" +
+                    "{" + "\"author\": {\"name\": \"" + player.getName() + "\", \"icon_url\": \"https://minotar.net/avatar/" + player.getName() + "\"}, \"description\": \"" + player.getName() + " got the " + event.getAdvancement().toString() + " advancement!\", \"timestamp\": \"" + formatter.format(dateNow) + "\", \"color\": \"16737792\"" + "}"
+                    + "]");
+        }
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent event) throws IOException {
+        if (config.getBoolean("playerDeathMessage")) {
+            Player player = event.getEntity();
+            Webhook.send(config.getString("webhookUrl"), "[" +
+                    "{" + "\"author\": {\"name\": \"" + player.getName() + "\", \"icon_url\": \"https://minotar.net/avatar/" + player.getName() + "\"}, \"description\": \""+ event.getDeathMessage() + "\", \"timestamp\": \"" + formatter.format(dateNow) + "\", \"color\": \"16737792\"" + "}"
                     + "]");
         }
     }
