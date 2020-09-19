@@ -19,9 +19,7 @@ public class Main extends JavaPlugin implements Listener {
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.000Z");
 
     FileConfiguration config = getConfig();
-
     String serverIconUrl;
-
     @Override
     public void onEnable() {
         config.addDefault("webhookUrl", "https://canary.discordapp.com/api/webhooks/756928609670791169/FlFZ6yHIpVCNEOvlDQ8GPjSBFnGxPeCUuTVzX9fxZZBlkq6Gq1s9-AlmCd4gPyvlBk44");
@@ -29,17 +27,13 @@ public class Main extends JavaPlugin implements Listener {
         config.addDefault("serverStartStopMessage", true);
         config.addDefault("chatBroadcastToDiscord", true);
         config.addDefault("serverName", "Change the server name in the config file");
+        config.addDefault("serverIconUrl", "https://i.imgur.com/rxsK7U3.png");
         config.options().copyDefaults(true);
         saveConfig();
 
         getServer().getPluginManager().registerEvents(this, this);
 
-
-        if (getServer().getServerIcon() == null) {
-            serverIconUrl = "https://i.imgur.com/rxsK7U3.png";
-        } else {
-            serverIconUrl = "https://eu.mc-api.net/v3/server/favicon/" + getServer().getIp();
-        }
+        serverIconUrl = config.getString("serverIconUrl");
 
         if (config.getBoolean("serverStartStopMessage")) {
             try {
