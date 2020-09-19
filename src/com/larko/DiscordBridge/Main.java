@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.larko.DiscordBridge.Webhook;
 
@@ -65,6 +66,16 @@ public class Main extends JavaPlugin implements Listener {
             Player player = event.getPlayer();
             Webhook.send(config.getString("webhookUrl"), "[" +
                     "{" + "\"author\": {\"name\": \"" + player.getName() + "\", \"icon_url\": \"https://minotar.net/avatar/" + player.getName() + "\"}, \"description\": \"" + player.getName() + " joined the server!\", \"timestamp\": \"" + formatter.format(dateNow) + "\", \"color\": \"7506394\"" + "}"
+                    + "]");
+        }
+    }
+
+    @EventHandler
+    public void onDisconnect(PlayerQuitEvent event) throws IOException {
+        if (config.getBoolean("leaveJoinMessage")) {
+            Player player = event.getPlayer();
+            Webhook.send(config.getString("webhookUrl"), "[" +
+                    "{" + "\"author\": {\"name\": \"" + player.getName() + "\", \"icon_url\": \"https://minotar.net/avatar/" + player.getName() + "\"}, \"description\": \"" + player.getName() + " left the server!\", \"timestamp\": \"" + formatter.format(dateNow) + "\", \"color\": \"16426522\"" + "}"
                     + "]");
         }
     }
