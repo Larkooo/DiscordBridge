@@ -20,6 +20,8 @@ public class Main extends JavaPlugin implements Listener {
 
     FileConfiguration config = getConfig();
 
+    String serverIconUrl;
+
     @Override
     public void onEnable() {
         config.addDefault("webhookUrl", "https://canary.discordapp.com/api/webhooks/756928609670791169/FlFZ6yHIpVCNEOvlDQ8GPjSBFnGxPeCUuTVzX9fxZZBlkq6Gq1s9-AlmCd4gPyvlBk44");
@@ -32,10 +34,17 @@ public class Main extends JavaPlugin implements Listener {
 
         getServer().getPluginManager().registerEvents(this, this);
 
+
+        if (getServer().getServerIcon() == null) {
+            serverIconUrl = "https://i.imgur.com/rxsK7U3.png";
+        } else {
+            serverIconUrl = "https://eu.mc-api.net/v3/server/favicon/" + getServer().getIp();
+        }
+
         if (config.getBoolean("serverStartStopMessage")) {
             try {
-                Webhook.send("[" +
-                        "{" + "\"author\": {\"name\": \"" + config.getString("serverName") + "\", \"icon_url\": \"https://i.imgur.com/rxsK7U3.png\"}, \"description\": \"Server started\", \"timestamp\": \"" + formatter.format(dateNow) + "\"" + "}"
+                Webhook.send(config.getString("webhookUrl"), "[" +
+                        "{" + "\"author\": {\"name\": \"" + config.getString("serverName") + "\", \"icon_url\": \"" + serverIconUrl + "\"}, \"description\": \"Server started\", \"timestamp\": \"" + formatter.format(dateNow) + "\", \"color\": \"4437377\"" + "}"
                         + "]");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -47,8 +56,8 @@ public class Main extends JavaPlugin implements Listener {
     public void onDisable() {
         if (config.getBoolean("serverStartStopMessage")) {
             try {
-                Webhook.send("[" +
-                        "{" + "\"author\": {\"name\": \"" + config.getString("serverName") + "\", \"icon_url\": \"https://i.imgur.com/rxsK7U3.png\"}, \"description\": \"Server closing\", \"timestamp\": \"" + formatter.format(dateNow) + "\"" + "}"
+                Webhook.send(config.getString("webhookUrl"), "[" +
+                        "{" + "\"author\": {\"name\": \"" + config.getString("serverName") + "\", \"icon_url\": \"" + serverIconUrl + "\"}, \"description\": \"Server closing\", \"timestamp\": \"" + formatter.format(dateNow) + "\", \"color\": \"15746887\"" + "}"
                         + "]");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -60,8 +69,8 @@ public class Main extends JavaPlugin implements Listener {
     public void onLogin(PlayerLoginEvent event) throws IOException {
         if (config.getBoolean("leaveJoinMessage")) {
             Player player = event.getPlayer();
-            Webhook.send("[" +
-                    "{" + "\"author\": {\"name\": \"" + player.getName() + "\", \"icon_url\": \"https://minotar.net/avatar/" + player.getName() + "\"}, \"description\": \"" + player.getName() + " joined the server!\", \"timestamp\": \"" + formatter.format(dateNow) + "\"" + "}"
+            Webhook.send(config.getString("webhookUrl"), "[" +
+                    "{" + "\"author\": {\"name\": \"" + player.getName() + "\", \"icon_url\": \"https://minotar.net/avatar/" + player.getName() + "\"}, \"description\": \"" + player.getName() + " joined the server!\", \"timestamp\": \"" + formatter.format(dateNow) + "\", \"color\": \"7506394\"" + "}"
                     + "]");
         }
     }
@@ -70,7 +79,7 @@ public class Main extends JavaPlugin implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) throws IOException {
         if (config.getBoolean("chatBroadcastToDiscord")) {
             Player player = event.getPlayer();
-            Webhook.send("[" +
+            Webhook.send(config.getString("webhookUrl"), "[" +
                     "{" + "\"author\": {\"name\": \"" + player.getName() + "\", \"icon_url\": \"https://minotar.net/avatar/" + player.getName() + "\"}, \"description\": \""+ event.getMessage() +"\", \"timestamp\": \"" + formatter.format(dateNow) + "\"" + "}"
                     + "]");
         }
