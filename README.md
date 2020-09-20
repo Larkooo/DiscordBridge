@@ -16,7 +16,7 @@ You can
 3. Change server icon
 
 Upcoming 
-- [ ] Different webhook url for each of the events
-- [x] Enable/disable each of the events
-- [ ] Change messages content (fields, description, title...)
-- [ ] Show if a player is admin on the message
+ - [ ] Different webhook url for each of the events
+ - [x] Enable/disable each of the events
+ - [ ] Change messages content (fields, description, title...)
+ - [ ] Show if a player is admin on the message
