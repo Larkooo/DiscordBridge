@@ -4,7 +4,7 @@
 <img src="https://cdn.discordapp.com/attachments/544666013707272194/757050322504908870/discordbridge.png" width="200" />
 
 # Highly configurable
-You can
+> You can
 1. Enable/Disable
    - Leave and join messages
    - Server start/stop messages
