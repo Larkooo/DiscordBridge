@@ -1,14 +1,12 @@
 package com.larko.DiscordBridge;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.libs.jline.internal.Log;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.larko.DiscordBridge.Webhook;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
